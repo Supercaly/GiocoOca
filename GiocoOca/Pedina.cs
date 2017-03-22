@@ -6,7 +6,7 @@ namespace GiocoOca
         //attributi identificativi
         private int _idGiocatore;
         private int _numeroCaselle;
-        private String _tipoPedina;
+        private string _tipoPedina;
 
         //attributi di stato
         private int _posizioneAttuale;
@@ -19,7 +19,7 @@ namespace GiocoOca
 
        // public bool inGalera = false;
 
-        public Pedina(int id, int numCas, String tipoPedina)
+        public Pedina(int id, int numCas, string tipoPedina)
         {
             _idGiocatore          = id;
             _numeroCaselle        = numCas;
@@ -42,7 +42,7 @@ namespace GiocoOca
         }
         //restituisce una stringa che indica se la pedina 
         //è GIOCATORE o BOT
-        public String tipoPedina
+        public string tipoPedina
         {
             get { return _tipoPedina; }
         }
@@ -95,21 +95,21 @@ namespace GiocoOca
             _tiroPrecedente = tiro;
 
             //se la pedina deve stare ferma per tot turni
-            if (_numeroTurniAttendere != 0)
-            {
+            //if (_numeroTurniAttendere != 0)
+           // {
                 //se sono in attesa non posso muovermi e resto dove sono
                 //se devo rimanere fermo per un numero di turni prestabilito
                 //if (_numeroTurniAttendere != 0)
-                    //faccio passare un turno
-                    _numeroTurniAttendere--;
-            }
+                //faccio passare un turno
+                //_numeroTurniAttendere--;
+            //}
             //se sono in prigione
             //else if (_inPrigione == true)
             //{ }
             //se sono nel pozzo
             //else if (_inPozzo == true) { }
             //se non sono bloccato
-            else if(_inPozzo == false && _inPrigione == false)
+            if (_numeroTurniAttendere == 0 && _inPozzo == false && _inPrigione == false)
             {
                 //altrimenti mi sposto
                 _inAttesa = false;
@@ -136,6 +136,11 @@ namespace GiocoOca
                 _inAttesa = true;
                 //e setto il numero di turni d'attendere
                 _numeroTurniAttendere = numeroTurni;
+            }
+            //se è in attesa decremento il turno
+            else
+            {
+                _numeroTurniAttendere--;
             }
         }//end attendi
     }

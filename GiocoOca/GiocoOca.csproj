@@ -57,25 +57,13 @@
     <Compile Include="Menu.Designer.cs">
       <DependentUpon>Menu.cs</DependentUpon>
     </Compile>
-    <Compile Include="Labirinto.cs" />
     <Compile Include="Locanda.cs" />
     <Compile Include="Normale.cs" />
-    <Compile Include="Oca.cs" />
     <Compile Include="Pedina.cs" />
-    <Compile Include="Ponte.cs" />
-    <Compile Include="Pozzo.cs" />
-    <Compile Include="Prigione.cs" />
     <Compile Include="RestaFermo.cs" />
-    <Compile Include="Scheletro.cs" />
     <Compile Include="SpostaInAvanti.cs" />
     <Compile Include="SpostaInDietro.cs" />
     <Compile Include="TavoloDaGioco.cs" />
-    <Compile Include="Vista.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Vista.Designer.cs">
-      <DependentUpon>Vista.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VistaDiGioco.cs">
@@ -86,9 +74,6 @@
     </Compile>
     <EmbeddedResource Include="Menu.resx">
       <DependentUpon>Menu.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Vista.resx">
-      <DependentUpon>Vista.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -120,10 +105,6 @@
     <None Include="Resources\SfondoPari.png" />
     <None Include="Resources\SfondoDispari.png" />
     <None Include="Resources\12.png" />
-    <None Include="Resources\Ponte.png" />
-    <None Include="Resources\Oca.png" />
-    <None Include="Resources\Locanda.png" />
-    <None Include="Resources\Labirinto.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\2.png" />

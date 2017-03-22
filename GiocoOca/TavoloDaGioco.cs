@@ -6,8 +6,8 @@ namespace GiocoOca
     public class TavoloDaGioco
     {
         //costanti simboliche per identificare il tipo di pedina
-        private const String GIOCATORE = "GIOCATORE";
-        private const String BOT = "BOT";
+        private const string GIOCATORE = "GIOCATORE";
+        private const string BOT = "BOT";
         //attributi della classe
         private int _numCaselle;    //numero di caselle
         private int _numGiocatori;  //numero di giocatori
@@ -17,7 +17,7 @@ namespace GiocoOca
         private Dado _dado1;    //il dado numero 1
         private Dado _dado2;    //il dado numero 2
         
-        private Pedina _vincitore;  //pedina che ha vinto la partita
+        private bool _vincitore;  //pedina che ha vinto la partita
         private Pedina _inPrigione; //pedina dentro la prigione
         private Pedina _inPozzo;    //pedina dentro al pozzo
         private int _lancio;    //lancio del dado effettuato dal giocatore
@@ -42,7 +42,7 @@ namespace GiocoOca
 
             _dado1        = new Dado(7); 
             _dado2        = new Dado(25);
-            _vincitore    = null;
+            _vincitore    = true;
             _inPrigione   = null;
             _inPozzo      = null;
             _lancio       = 0;
@@ -84,7 +84,7 @@ namespace GiocoOca
          */
         public void gioca()
         {
-            if(_vincitore == null)
+            if(_vincitore == true)
                 foreach (Pedina p in _pedine)
                 {
                     if (p.tipoPedina == GIOCATORE)
@@ -99,7 +99,6 @@ namespace GiocoOca
                         _vincitore = p;
                         OnVittoria.Invoke(this, new ArgPedina(p));
                     }
-                    
                 }
             if (_numGiocatori == 2 && _inPozzo != null && _inPrigione != null)
                 OnVittoria.Invoke(this, new ArgPedina(null));
@@ -109,14 +108,13 @@ namespace GiocoOca
         private void turnoGiocatore(Pedina p)
         {
             int tiro = 0;
-
             //se la pedina non è in attesa o in prigione
             //lancio il dado, altrimenti passo 0 come lancio
             if (!p.inAttesa && _inPrigione != p && _inPozzo != p)
                  tiro = lanciaDadi();
             _lancio = tiro;
             OnValueDadi_Updated.Invoke(this, new EventArgs());
-            sposta(p, p.muovi(31));
+            sposta(p, p.muovi(tiro));
             OnPosizione_Updated.Invoke(this, new ArgPedina(p));
         }//end turnoGiocatore
         
@@ -124,7 +122,7 @@ namespace GiocoOca
         private void turnoBot(Pedina p)
         {
             int tiro = lanciaDadi();
-            sposta(p, p.muovi(26));
+            sposta(p, p.muovi(tiro));
             OnPosizione_Updated.Invoke(this, new ArgPedina(p));
         }//end turnoBot
 
@@ -196,12 +194,12 @@ namespace GiocoOca
             }
 
 
-            foreach (Casella c in _caselle)
-            {
-                Console.WriteLine(c.idCasella + " " + c.GetType());
-                //if (c is Prigione)
-                //    Console.WriteLine(c.idCasella);
-            }
+            //foreach (Casella c in _caselle)
+            //{
+            //    Console.WriteLine(c.idCasella + " " + c.GetType());
+            //    //if (c is Prigione)
+            //    //    Console.WriteLine(c.idCasella);
+            //}
         }
        
     }//end classe

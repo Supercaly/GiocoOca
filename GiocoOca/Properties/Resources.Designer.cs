@@ -73,16 +73,6 @@ namespace GiocoOca.Properties {
         /// <summary>
         ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Labirinto {
-            get {
-                object obj = ResourceManager.GetObject("Labirinto", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap Labirinto2 {
             get {
                 object obj = ResourceManager.GetObject("Labirinto2", resourceCulture);
@@ -93,29 +83,9 @@ namespace GiocoOca.Properties {
         /// <summary>
         ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Locanda {
-            get {
-                object obj = ResourceManager.GetObject("Locanda", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap Locanda2 {
             get {
                 object obj = ResourceManager.GetObject("Locanda2", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Oca {
-            get {
-                object obj = ResourceManager.GetObject("Oca", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -136,16 +106,6 @@ namespace GiocoOca.Properties {
         internal static System.Drawing.Bitmap Oca3 {
             get {
                 object obj = ResourceManager.GetObject("Oca3", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Ponte {
-            get {
-                object obj = ResourceManager.GetObject("Ponte", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

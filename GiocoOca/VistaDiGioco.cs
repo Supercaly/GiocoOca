@@ -74,7 +74,7 @@ namespace GiocoOca
         }//end getButtonLanciaDadi
 
         //metodo per settare la label con il lancio dei dadi
-        public void setLabelLancioDadi(String s)
+        public void setLabelLancioDadi(string s)
         {
             labelLancioDadi.Text = s;
         }//end setLabelLancioDadi
@@ -344,7 +344,7 @@ namespace GiocoOca
         }
 
         //IL CAZZAFA CHE FA FINIRE IL GIOCO
-        public void SetTextbutt(String s)
+        public void SetTextbutt(string s)
         {
             //Pedina1.Text = s;
             //System.Threading.Thread.Sleep(2000);

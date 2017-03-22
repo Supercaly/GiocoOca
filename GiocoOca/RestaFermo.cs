@@ -33,7 +33,7 @@ namespace GiocoOca
                 p.inPrigione = true;
                 t.inPrigione = p;
             }
-            Console.WriteLine(this.idCasella + " " + _idCasella + " " + t.inPozzo + " " + t.inPrigione + " " + p.inPozzo + p.inPrigione);
+            //Console.WriteLine(this.idCasella + " " + _idCasella + " " + t.inPozzo + " " + t.inPrigione + " " + p.inPozzo + p.inPrigione);
             evento.Invoke(this, new ArgPedina(p));
         }
     }
