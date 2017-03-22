@@ -19,13 +19,14 @@ namespace GiocoOca
         
         private Pedina _vincitore;  //pedina che ha vinto la partita
         private Pedina _inPrigione; //pedina dentro la prigione
+        private Pedina _inPozzo;    //pedina dentro al pozzo
         private int _lancio;    //lancio del dado effettuato dal giocatore
 
         //eventi 
         public EventHandler<ArgPedina> OnEffetto_Applied;      //invocato quando viene applicato l'effetto
         public EventHandler OnValueDadi_Updated;    //invocato ogni volta che il dado viene lanciato
         public EventHandler<ArgPedina> OnPosizione_Updated;    //invocato quando la posizione di una pedina cambia 
-        public EventHandler OnVittoria;             //invocato quando una pedina arriva alla fine
+        public EventHandler<ArgPedina> OnVittoria;             //invocato quando una pedina arriva alla fine
         
         /*
          * Al costruttore della classe è passato il numero delle caselle [63-90] 
@@ -43,6 +44,7 @@ namespace GiocoOca
             _dado2        = new Dado(25);
             _vincitore    = null;
             _inPrigione   = null;
+            _inPozzo      = null;
             _lancio       = 0;
 
             popolaCaselle();
@@ -57,15 +59,21 @@ namespace GiocoOca
             get { return _lancio; }
         }
         //ritorna la pedina che ha vinto la partita
-        public Pedina vincitore
-        {
-            get { return _vincitore; }
-        }
-        //ritorna e setta la pedina correntemente il prigione
+      //  public Pedina vincitore
+        //{
+          //  get { return _vincitore; }
+        //}
+        //ritorna e setta la pedina correntemente in prigione
         public Pedina inPrigione
         {
             get { return _inPrigione; }
             set { _inPrigione = value; }
+        }
+        //ritorna e setta la pedina correntemente nel pozzo
+        public Pedina inPozzo
+        {
+            get { return _inPozzo; }
+            set { _inPozzo = value; }
         }
         /*
          * Il metodo gioca è quello principale e gestisce il turno di tutti 
@@ -86,12 +94,15 @@ namespace GiocoOca
                     else
                        throw new Exception("Problema con le caselle");
 
-                     if (p.vincitore)
+                    if (p.vincitore)
                     {
                         _vincitore = p;
-                        OnVittoria.Invoke(this, new EventArgs());
+                        OnVittoria.Invoke(this, new ArgPedina(p));
                     }
+                    
                 }
+            if (_numGiocatori == 2 && _inPozzo != null && _inPrigione != null)
+                OnVittoria.Invoke(this, new ArgPedina(null));
         }
 
         //metodo per gestire il turno dell'utente
@@ -101,11 +112,11 @@ namespace GiocoOca
 
             //se la pedina non è in attesa o in prigione
             //lancio il dado, altrimenti passo 0 come lancio
-            if (!p.inAttesa && _inPrigione != p)
+            if (!p.inAttesa && _inPrigione != p && _inPozzo != p)
                  tiro = lanciaDadi();
             _lancio = tiro;
             OnValueDadi_Updated.Invoke(this, new EventArgs());
-            sposta(p, p.muovi(tiro));
+            sposta(p, p.muovi(31));
             OnPosizione_Updated.Invoke(this, new ArgPedina(p));
         }//end turnoGiocatore
         
@@ -113,7 +124,7 @@ namespace GiocoOca
         private void turnoBot(Pedina p)
         {
             int tiro = lanciaDadi();
-            sposta(p, p.muovi(tiro));
+            sposta(p, p.muovi(26));
             OnPosizione_Updated.Invoke(this, new ArgPedina(p));
         }//end turnoBot
 
@@ -169,11 +180,13 @@ namespace GiocoOca
                 else if (i == 19)
                     _caselle.Add(new Locanda());
                 //istanzio la casella Pozzo
-                else if (i == 31)
-                    _caselle.Add(new Pozzo());
+                else if (i == 31 || i == 52)
+                    _caselle.Add(new RestaFermo(i));
+               // else if (i == 31)
+                 //   _caselle.Add(new Pozzo());
                 //istanzio la casella Prigione
-                else if (i == 52)
-                    _caselle.Add(new Prigione());
+                //else if (i == 52)
+                  //  _caselle.Add(new Prigione());
                 //istanzio la casella Labirinto e Scheletro
                 else if (i == 42 || i == 58)
                     _caselle.Add(new SpostaInDietro(i, (i == 42) ? 39 : 1));
@@ -181,11 +194,13 @@ namespace GiocoOca
                 else
                     _caselle.Add(new Normale(i));
             }
+
+
             foreach (Casella c in _caselle)
             {
                 Console.WriteLine(c.idCasella + " " + c.GetType());
                 //if (c is Prigione)
-                  //  Console.WriteLine(c.idCasella);
+                //    Console.WriteLine(c.idCasella);
             }
         }
        

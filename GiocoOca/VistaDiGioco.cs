@@ -30,7 +30,7 @@ namespace GiocoOca
                    Color.FromArgb(255, 255, 20, 147),   //arancione
                    Color.FromArgb(255, 0, 0, 0)        //nero
                    };
-        
+
         public VistaDiGioco(int numeroCaselle, int numeroGiocatori)
         {
             this.numCaselle       = numeroCaselle;
@@ -42,20 +42,23 @@ namespace GiocoOca
             this.GruppoGiocatori  = new GroupBox();
             InitializeList();
             InitializeComponent();
-            
+
         }//end costruttore
 
         private void Vista2_Load(object sender, EventArgs e)
         {
-            
+            //imposto l'immagine di sfondo del tavolo da gioco
             pannelloTavolo.BackgroundImage = Properties.Resources.Sfondo;
             pannelloTavolo.BorderStyle = BorderStyle.FixedSingle;
             
+            //disegno gli elementi base del tavolo da gioco
             try
             {
+                //throw new Exception("banana");
                 loadCaselle();  //disegno le caselle
                 loadPedine();   //disegno le pedine
                 loadIndice();   //disegno l'indice dei giocatori
+                
             }
             catch (Exception)
             {
@@ -111,7 +114,6 @@ namespace GiocoOca
                 caselle[i].TabStop = false;
                 caselle[i].FlatStyle = FlatStyle.Flat;
                 caselle[i].FlatAppearance.BorderSize = 0;
-                caselle[i].ForeColor = Color.FromArgb(255, 0, 255, 0);
                 caselle[i].Font = new Font(caselle[i].Font, FontStyle.Bold);
                 caselle[i].Margin = new Padding(0);
                
@@ -162,7 +164,6 @@ namespace GiocoOca
                 }
                 #endregion
 
-                caselle[i].MouseHover += Mostra_Tipo(this, new EventArgs);
                 pannelloTavolo.Controls.Add(caselle[i]);
                 disegnaCaselle();
                 caselle[i].Invalidate();
@@ -174,27 +175,30 @@ namespace GiocoOca
         {
             for (int i = 0; i < numGiocatori; i++)
             {
-                pedine[i].BackColor = colori[i];
-                pedine[i].Location = posizionePedina(i);
+                pedine[i].BackColor = colori[i];    //setto il colore
+                pedine[i].Location = posizionePedina(i);    //imposto la posizione
+                //setto la dimensione del riquadro
                 if (numCaselle == 63)
                     pedine[i].Size = new Size(14, 14);
                 else
                     pedine[i].Size = new Size(12, 12);
-                pedine[i].Text = "";
-                pedine[i].Name = "Giocatore " + i;
-                pedine[i].TabStop = false;
+                pedine[i].Text = "";    
+                pedine[i].Name = "Giocatore " + i;  //nome della pedina
+                pedine[i].TabStop = false;  
+                //imposto i bordi
                 pedine[i].FlatStyle = FlatStyle.Flat;
                 pedine[i].FlatAppearance.BorderSize = 2;
                 pedine[i].FlatAppearance.BorderColor = Color.FromArgb(255, 255, 255, 255);
+                //aggiungo tutte le pedine nella casella 0
                 caselle[0].Controls.Add(pedine[i]);
             }
         }//end loadPedine
 
         private void loadIndice()
         {
-            GruppoGiocatori.Location = new Point(12, 418);
-            GruppoGiocatori.Size = new Size(200, 91);
-            GruppoGiocatori.Text = "Giocatori";
+            GruppoGiocatori.Location = new Point(12, 418);  //posizione
+            GruppoGiocatori.Size = new Size(200, 91);   //dimensione
+            GruppoGiocatori.Text = "Giocatori"; 
             GruppoGiocatori.TabStop = false;
             GruppoGiocatori.TabIndex = 7;
             
@@ -231,6 +235,7 @@ namespace GiocoOca
                     default:
                         throw new Exception("Problema con l'indice dei giocatori");
                 }
+                //setto lo stile delle label e dei riquadri
                 LabelGiocatori[i].AutoSize = true;
                 LabelGiocatori[i].Size = new Size(62, 13);
                 LabelGiocatori[i].Text = "Giocatore " + i;
@@ -241,6 +246,7 @@ namespace GiocoOca
                 BottoniGiocatori[i].FlatStyle = FlatStyle.Flat;
                 BottoniGiocatori[i].FlatAppearance.BorderSize = 0;
                 BottoniGiocatori[i].UseVisualStyleBackColor = false;
+                //agiungo la label e il riquadro all'indice
                 GruppoGiocatori.Controls.Add(LabelGiocatori[i]);
                 GruppoGiocatori.Controls.Add(BottoniGiocatori[i]);
             }
@@ -346,15 +352,17 @@ namespace GiocoOca
                 "Vittoria!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk); 
             Application.Exit();
         }
+        public void SetTextbutt()
+        {
+            MessageBox.Show("Nessun giocatore ha vinto la partita...",
+                "Parità", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+            Application.Exit();
+        }
 
         private void bottoneRegole_Click(object sender, EventArgs e)
         {
             string regole = Properties.Resources.Regole_gioco_oca;
             MessageBox.Show(regole, "Regole del gioco", MessageBoxButtons.OK);
-        }
-        private void Mostra_Tipo(object sender, EventArgs e)
-        {
-
         }
     }
 }

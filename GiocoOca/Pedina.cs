@@ -14,6 +14,7 @@ namespace GiocoOca
         private int _numeroTurniAttendere;
         private bool _inAttesa;
         private bool _inPrigione;
+        private bool _inPozzo;
         private bool _vincitore;
 
        // public bool inGalera = false;
@@ -30,40 +31,55 @@ namespace GiocoOca
             _vincitore            = false;
             _inAttesa             = false;
             _inPrigione           = false;
+            _inPozzo              = false;
         }//end costruttore
 
         //Proprietà 
+        //restituisce l'id del giocatore
         public int idGiocatore
         {
             get { return _idGiocatore; }
         }
-
+        //restituisce una stringa che indica se la pedina 
+        //è GIOCATORE o BOT
         public String tipoPedina
         {
             get { return _tipoPedina; }
         }
 
+        //restituisce il tiro effettuato precedentemente
         public int tiroPrecedente
         {
             get { return _tiroPrecedente; }
         }
 
+        //restituisce la posizione attuale della pedina
         public int posizione
         {
             get { return _posizioneAttuale; }
         }
-
+        //restituisce un valore booleano che indica se la 
+        //pedina è in attesa
         public bool inAttesa
         {
             get { return _inAttesa; }
         }
-
+        //restituisce un valore booleano che indica se la 
+        //pedina è in prigione
         public bool inPrigione
         {
             get { return _inPrigione; }
             set { _inPrigione = value; }
         }
-
+        //restituisce un valore booleano che indica se la 
+        //pedina è nel pozzo
+        public bool inPozzo
+        {
+            get { return _inPozzo; }
+            set { _inPozzo = value; }
+        }
+        //restituisce un valore booleano che indica se la 
+        //pedina è il vincitore
         public bool vincitore
         {
             get { return _vincitore; }
@@ -78,6 +94,7 @@ namespace GiocoOca
         {
             _tiroPrecedente = tiro;
 
+            //se la pedina deve stare ferma per tot turni
             if (_numeroTurniAttendere != 0)
             {
                 //se sono in attesa non posso muovermi e resto dove sono
@@ -86,7 +103,13 @@ namespace GiocoOca
                     //faccio passare un turno
                     _numeroTurniAttendere--;
             }
-            else if(_inPrigione == false)
+            //se sono in prigione
+            //else if (_inPrigione == true)
+            //{ }
+            //se sono nel pozzo
+            //else if (_inPozzo == true) { }
+            //se non sono bloccato
+            else if(_inPozzo == false && _inPrigione == false)
             {
                 //altrimenti mi sposto
                 _inAttesa = false;

@@ -65,6 +65,7 @@
     <Compile Include="Ponte.cs" />
     <Compile Include="Pozzo.cs" />
     <Compile Include="Prigione.cs" />
+    <Compile Include="RestaFermo.cs" />
     <Compile Include="Scheletro.cs" />
     <Compile Include="SpostaInAvanti.cs" />
     <Compile Include="SpostaInDietro.cs" />

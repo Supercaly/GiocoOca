@@ -21,9 +21,12 @@ namespace GiocoOca
         }//end costruttore
 
         //metodo eseguito alla vittoria di un giocatore
-        private void VittoriaDiUnGiocatore(object sender, EventArgs e)
+        private void VittoriaDiUnGiocatore(object sender, ArgPedina e)
         {
-            _vista.SetTextbutt(_tavolo.vincitore.idGiocatore.ToString());
+            if (e.getPedina != null)
+                _vista.SetTextbutt(e.getPedina.idGiocatore.ToString());
+            else
+                _vista.SetTextbutt();
            // _vista.SetTextbutt("ha vinto il giocatore: " + _tavolo._vincitore.idGiocatore);
         }
 
