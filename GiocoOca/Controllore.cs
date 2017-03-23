@@ -18,8 +18,14 @@ namespace GiocoOca
             _tavolo.OnPosizione_Updated         += AggiornaPosizione;
             _tavolo.OnVittoria                  += VittoriaDiUnGiocatore;
             _vista.getButtonLanciaDadi().Click  += Vista_Click_LanciaDadi;
+            _vista.OnRigioca_Clicked            += Vista_Click_Rigioca;
         }//end costruttore
 
+        private void Vista_Click_Rigioca(object sender, EventArgs e)
+        {
+            _tavolo.inizializza();
+            _vista.inizializza();
+        }
         //metodo eseguito alla vittoria di un giocatore
         private void VittoriaDiUnGiocatore(object sender, ArgPedina e)
         {
@@ -27,6 +33,7 @@ namespace GiocoOca
                 _vista.SetTextbutt(e.getPedina.idGiocatore.ToString());
             else
                 _vista.SetTextbutt();
+
            // _vista.SetTextbutt("ha vinto il giocatore: " + _tavolo._vincitore.idGiocatore);
         }
 

@@ -31,41 +31,35 @@ namespace GiocoOca
                    Color.FromArgb(255, 0, 0, 0)        //nero
                    };
 
+        public EventHandler OnRigioca_Clicked;
+
         public VistaDiGioco(int numeroCaselle, int numeroGiocatori)
         {
             this.numCaselle       = numeroCaselle;
             this.numGiocatori     = numeroGiocatori;
-            this.caselle          = new List<Button>();
-            this.pedine           = new List<Button>();
-            this.LabelGiocatori   = new List<Label>();
+            this.caselle = new List<Button>();
+            this.pedine = new List<Button>();
+            this.LabelGiocatori = new List<Label>();
             this.BottoniGiocatori = new List<Button>();
-            this.GruppoGiocatori  = new GroupBox();
+            this.GruppoGiocatori = new GroupBox();
+            Console.WriteLine(caselle.Count);
+
             InitializeList();
             InitializeComponent();
-
-        }//end costruttore
-
-        private void Vista2_Load(object sender, EventArgs e)
-        {
-            //imposto l'immagine di sfondo del tavolo da gioco
             pannelloTavolo.BackgroundImage = Properties.Resources.Sfondo;
             pannelloTavolo.BorderStyle = BorderStyle.FixedSingle;
+
+            loadCaselle();  //disegno le caselle
+            inizializza();
+            loadIndice();   //disegno l'indice dei giocatori
             
-            //disegno gli elementi base del tavolo da gioco
-            try
-            {
-                //throw new Exception("banana");
-                loadCaselle();  //disegno le caselle
-                loadPedine();   //disegno le pedine
-                loadIndice();   //disegno l'indice dei giocatori
-                
-            }
-            catch (Exception)
-            {
-                //DA GESTIRE MOOOLTO MEGLIO 
-            }
-            
-        }//end Vista2_Load
+        }//end costruttore
+
+        //metodo per inizializzare tutti gli elementi della grafica 
+        public void inizializza()
+        {
+            loadPedine();   //disegno le pedine
+        }//end inizializza
 
         //metodo per passare il bottone lancia dadi al controllore
         public Button getButtonLanciaDadi()
@@ -193,7 +187,8 @@ namespace GiocoOca
                 caselle[0].Controls.Add(pedine[i]);
             }
         }//end loadPedine
-
+        
+        //carico l'indice dei giocatori
         private void loadIndice()
         {
             GruppoGiocatori.Location = new Point(12, 418);  //posizione
@@ -278,7 +273,7 @@ namespace GiocoOca
             caselle[numCaselle].BackgroundImage = Properties.Resources.Oca3;
         }//end disegnaCaselle
 
-        //metodo per spostare ua pedina nella nuova posizione
+        //metodo per spostare una pedina nella nuova posizione
         public void spostaPedina(int posizione, int numPedina)
         {
            caselle[posizione].Controls.Add(pedine[numPedina]);
@@ -343,15 +338,20 @@ namespace GiocoOca
             return posizione;
         }
 
-        //IL CAZZAFA CHE FA FINIRE IL GIOCO
+        //metodo che termina il gioco 
         public void SetTextbutt(string s)
         {
-            //Pedina1.Text = s;
-            //System.Threading.Thread.Sleep(2000);
+            
             MessageBox.Show("Il Giocatore " + s + " ha vinto la partita...", 
-                "Vittoria!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk); 
-            Application.Exit();
+                "Vittoria!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+            if (MessageBox.Show("Rigiocare?", "Rigioca", MessageBoxButtons.RetryCancel, MessageBoxIcon.Question) == DialogResult.Retry)
+            {
+                OnRigioca_Clicked.Invoke(this, new EventArgs());
+            }
+            else
+                Application.Exit();
         }
+        //overload del metodo SetTextbutt per terminare il gioco in caso di parità
         public void SetTextbutt()
         {
             MessageBox.Show("Nessun giocatore ha vinto la partita...",
@@ -359,10 +359,13 @@ namespace GiocoOca
             Application.Exit();
         }
 
+        //mostra le regole del gioco
         private void bottoneRegole_Click(object sender, EventArgs e)
         {
             string regole = Properties.Resources.Regole_gioco_oca;
-            MessageBox.Show(regole, "Regole del gioco", MessageBoxButtons.OK);
+            string titolo = "Regole del gioco";
+            MessageBoxButtons bottoni = MessageBoxButtons.OK;
+            MessageBox.Show(regole, titolo, bottoni);
         }
     }
 }

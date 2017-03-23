@@ -113,6 +113,8 @@ namespace GiocoOca
             {
                 //altrimenti mi sposto
                 _inAttesa = false;
+                _inPozzo = false;
+                _inPrigione = false;
                 _posizioneAttuale += tiro;
             }
 
@@ -123,7 +125,7 @@ namespace GiocoOca
             //controllo se la pedina è arrivata nell'ultima casella
             if (_posizioneAttuale == _numeroCaselle)
                 _vincitore = true;
-
+            Console.WriteLine(_numeroTurniAttendere);
             return _posizioneAttuale;
         }//end muovi
 

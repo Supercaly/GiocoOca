@@ -111,7 +111,6 @@
             this.MaximizeBox = false;
             this.Name = "VistaDiGioco";
             this.Text = "Gioco Dell\'Oca";
-            this.Load += new System.EventHandler(this.Vista2_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);

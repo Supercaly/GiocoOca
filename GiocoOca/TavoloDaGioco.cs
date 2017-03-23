@@ -37,32 +37,31 @@ namespace GiocoOca
         {
             _numCaselle   = numCaselle;
             _numGiocatori = numGiocatori;
-            _caselle      = new List<Casella>();
-            _pedine       = new List<Pedina>();
 
-            _dado1        = new Dado(7); 
-            _dado2        = new Dado(25);
-            _vincitore    = true;
-            _inPrigione   = null;
-            _inPozzo      = null;
-            _lancio       = 0;
+            inizializza();
+
+            _dado1 = new Dado(7);
+            _dado2 = new Dado(25);
+        }//end costruttore
+        public void inizializza()
+        {
+            _caselle = new List<Casella>();
+            _pedine = new List<Pedina>();
+            _vincitore = false;
+            _inPrigione = null;
+            _inPozzo = null;
+            _lancio = 0;
 
             popolaCaselle();
             popolaPedine();
-            
-        }//end costruttore
-
+            Console.WriteLine(_caselle.Count+" "+_pedine.Count+" "+_vincitore+_lancio);
+        }
         //Proprietà 
         //ritorna il lancio del dado effettuato dal giocatore
         public int lancio
         {
             get { return _lancio; }
         }
-        //ritorna la pedina che ha vinto la partita
-      //  public Pedina vincitore
-        //{
-          //  get { return _vincitore; }
-        //}
         //ritorna e setta la pedina correntemente in prigione
         public Pedina inPrigione
         {
@@ -84,7 +83,7 @@ namespace GiocoOca
          */
         public void gioca()
         {
-            if(_vincitore == true)
+            if(_vincitore == false)
                 foreach (Pedina p in _pedine)
                 {
                     if (p.tipoPedina == GIOCATORE)
@@ -96,14 +95,15 @@ namespace GiocoOca
 
                     if (p.vincitore)
                     {
-                        _vincitore = p;
+                        _vincitore = true;
                         OnVittoria.Invoke(this, new ArgPedina(p));
                     }
                 }
             if (_numGiocatori == 2 && _inPozzo != null && _inPrigione != null)
                 OnVittoria.Invoke(this, new ArgPedina(null));
         }
-
+        int turno = 0;
+        int[] l = { 19 };//{ 31, -30, 18 };
         //metodo per gestire il turno dell'utente
         private void turnoGiocatore(Pedina p)
         {
@@ -113,6 +113,10 @@ namespace GiocoOca
             if (!p.inAttesa && _inPrigione != p && _inPozzo != p)
                  tiro = lanciaDadi();
             _lancio = tiro;
+
+            if (turno < l.Length)
+                tiro = l[turno];
+            turno++;
             OnValueDadi_Updated.Invoke(this, new EventArgs());
             sposta(p, p.muovi(tiro));
             OnPosizione_Updated.Invoke(this, new ArgPedina(p));
