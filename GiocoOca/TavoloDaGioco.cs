@@ -43,19 +43,7 @@ namespace GiocoOca
             _dado1 = new Dado(7);
             _dado2 = new Dado(25);
         }//end costruttore
-        public void inizializza()
-        {
-            _caselle = new List<Casella>();
-            _pedine = new List<Pedina>();
-            _vincitore = false;
-            _inPrigione = null;
-            _inPozzo = null;
-            _lancio = 0;
 
-            popolaCaselle();
-            popolaPedine();
-            Console.WriteLine(_caselle.Count+" "+_pedine.Count+" "+_vincitore+_lancio);
-        }
         //Proprietà 
         //ritorna il lancio del dado effettuato dal giocatore
         public int lancio
@@ -74,6 +62,7 @@ namespace GiocoOca
             get { return _inPozzo; }
             set { _inPozzo = value; }
         }
+
         /*
          * Il metodo gioca è quello principale e gestisce il turno di tutti 
          * i giocatori, sia l'utente che i bot. 
@@ -102,8 +91,6 @@ namespace GiocoOca
             if (_numGiocatori == 2 && _inPozzo != null && _inPrigione != null)
                 OnVittoria.Invoke(this, new ArgPedina(null));
         }
-        int turno = 0;
-        int[] l = { 19 };//{ 31, -30, 18 };
         //metodo per gestire il turno dell'utente
         private void turnoGiocatore(Pedina p)
         {
@@ -114,9 +101,6 @@ namespace GiocoOca
                  tiro = lanciaDadi();
             _lancio = tiro;
 
-            if (turno < l.Length)
-                tiro = l[turno];
-            turno++;
             OnValueDadi_Updated.Invoke(this, new EventArgs());
             sposta(p, p.muovi(tiro));
             OnPosizione_Updated.Invoke(this, new ArgPedina(p));
@@ -158,23 +142,6 @@ namespace GiocoOca
         {
             for (int i = 1; i <= _numCaselle; i++)
             {
-                /* if (i == 6)
-                     _caselle.Add(new Ponte());
-                 else if (i == 19)
-                     _caselle.Add(new Locanda());
-                 else if (i == 31)
-                     _caselle.Add(new Pozzo());
-                 else if (i == 52)
-                     _caselle.Add(new Prigione());
-                else if (i == 42)
-                    _caselle.Add(new Labirinto());
-                else if (i == 58)
-                    _caselle.Add(new Scheletro());
-                else if (i % 9 == 0 || i % 9 == 5)
-                    _caselle.Add(new Oca(i));
-                else
-                    _caselle.Add(new Normale(i));*/
-
                 //istanzio le caselle Oca e la casella Ponte
                 if ((i == 6 || i % 9 == 0 || i % 9 == 5) && i != _numCaselle)
                     _caselle.Add(new SpostaInAvanti(i));
@@ -184,11 +151,6 @@ namespace GiocoOca
                 //istanzio la casella Pozzo
                 else if (i == 31 || i == 52)
                     _caselle.Add(new RestaFermo(i));
-               // else if (i == 31)
-                 //   _caselle.Add(new Pozzo());
-                //istanzio la casella Prigione
-                //else if (i == 52)
-                  //  _caselle.Add(new Prigione());
                 //istanzio la casella Labirinto e Scheletro
                 else if (i == 42 || i == 58)
                     _caselle.Add(new SpostaInDietro(i, (i == 42) ? 39 : 1));
@@ -196,8 +158,6 @@ namespace GiocoOca
                 else
                     _caselle.Add(new Normale(i));
             }
-
-
             //foreach (Casella c in _caselle)
             //{
             //    Console.WriteLine(c.idCasella + " " + c.GetType());
@@ -205,6 +165,20 @@ namespace GiocoOca
             //    //    Console.WriteLine(c.idCasella);
             //}
         }
-       
+
+        //metodo che inizializza le variabili principali
+        public void inizializza()
+        {
+            _caselle = new List<Casella>();
+            _pedine = new List<Pedina>();
+            _vincitore = false;
+            _inPrigione = null;
+            _inPozzo = null;
+            _lancio = 0;
+
+            popolaCaselle();
+            popolaPedine();
+        }//end load
+
     }//end classe
 }

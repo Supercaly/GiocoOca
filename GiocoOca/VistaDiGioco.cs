@@ -55,7 +55,7 @@ namespace GiocoOca
             
         }//end costruttore
 
-        //metodo per inizializzare tutti gli elementi della grafica 
+        //COMMENTO DA AGGIUNGERE
         public void inizializza()
         {
             loadPedine();   //disegno le pedine
@@ -103,14 +103,15 @@ namespace GiocoOca
                 else
                     caselle[i].Size = new Size(40, 40);
 
-                caselle[i].Enabled = false;
+                caselle[i].Enabled = true;
                 caselle[i].Text = i.ToString();
                 caselle[i].TabStop = false;
                 caselle[i].FlatStyle = FlatStyle.Flat;
                 caselle[i].FlatAppearance.BorderSize = 0;
                 caselle[i].Font = new Font(caselle[i].Font, FontStyle.Bold);
                 caselle[i].Margin = new Padding(0);
-               
+                caselle[i].ForeColor = Color.FromArgb(255, 32, 32, 32);
+
                 #region Posiziono le caselle
                 if (numCaselle == 63)
                 {
@@ -160,7 +161,7 @@ namespace GiocoOca
 
                 pannelloTavolo.Controls.Add(caselle[i]);
                 disegnaCaselle();
-                caselle[i].Invalidate();
+                caselle[i].Update();
             }
         }//end loadCaselle
 
@@ -178,11 +179,13 @@ namespace GiocoOca
                     pedine[i].Size = new Size(12, 12);
                 pedine[i].Text = "";    
                 pedine[i].Name = "Giocatore " + i;  //nome della pedina
-                pedine[i].TabStop = false;  
+                pedine[i].TabStop = false;
+                pedine[i].Enabled = false; 
                 //imposto i bordi
                 pedine[i].FlatStyle = FlatStyle.Flat;
                 pedine[i].FlatAppearance.BorderSize = 2;
                 pedine[i].FlatAppearance.BorderColor = Color.FromArgb(255, 255, 255, 255);
+                caselle[i].Invalidate();
                 //aggiungo tutte le pedine nella casella 0
                 caselle[0].Controls.Add(pedine[i]);
             }
@@ -276,7 +279,7 @@ namespace GiocoOca
         //metodo per spostare una pedina nella nuova posizione
         public void spostaPedina(int posizione, int numPedina)
         {
-           caselle[posizione].Controls.Add(pedine[numPedina]);
+            caselle[posizione].Controls.Add(pedine[numPedina]);
         }
 
         //metodo per calcolare la posizione della pedina dentro la casella
@@ -323,13 +326,13 @@ namespace GiocoOca
                         posizione = new Point(4, 26);
                         break;
                     case 3:
-                        posizione = new Point(21, 0);
+                        posizione = new Point(23, 0);
                         break;
                     case 4:
-                        posizione = new Point(21, 13);
+                        posizione = new Point(23, 13);
                         break;
                     case 5:
-                        posizione = new Point(21, 26);
+                        posizione = new Point(23, 26);
                         break;
                     default:
                         throw new Exception("Problema con le pedine");
@@ -344,21 +347,29 @@ namespace GiocoOca
             
             MessageBox.Show("Il Giocatore " + s + " ha vinto la partita...", 
                 "Vittoria!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-            if (MessageBox.Show("Rigiocare?", "Rigioca", MessageBoxButtons.RetryCancel, MessageBoxIcon.Question) == DialogResult.Retry)
-            {
-                OnRigioca_Clicked.Invoke(this, new EventArgs());
-            }
-            else
-                Application.Exit();
+            rigiocare();
         }
         //overload del metodo SetTextbutt per terminare il gioco in caso di parità
         public void SetTextbutt()
         {
             MessageBox.Show("Nessun giocatore ha vinto la partita...",
                 "Parità", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-            Application.Exit();
+            rigiocare();
         }
-
+        private void rigiocare()
+        {
+            string testo = "Ripetere la partita?";
+            string titolo = "Rigiocare";
+            MessageBoxButtons bottoni = MessageBoxButtons.YesNo;
+            MessageBoxIcon icona = MessageBoxIcon.Question;
+            DialogResult rigiocare = DialogResult.Yes;
+            if (MessageBox.Show(testo, titolo, bottoni, icona) == rigiocare)
+            {
+                OnRigioca_Clicked.Invoke(this, new EventArgs());
+            }
+            else
+                Application.Exit();
+        }
         //mostra le regole del gioco
         private void bottoneRegole_Click(object sender, EventArgs e)
         {

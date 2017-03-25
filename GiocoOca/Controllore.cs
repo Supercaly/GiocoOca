@@ -21,6 +21,7 @@ namespace GiocoOca
             _vista.OnRigioca_Clicked            += Vista_Click_Rigioca;
         }//end costruttore
 
+        //metodo eseguito quando si vuole rigiocare la partita
         private void Vista_Click_Rigioca(object sender, EventArgs e)
         {
             _tavolo.inizializza();

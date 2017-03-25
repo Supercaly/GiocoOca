@@ -4,20 +4,18 @@ namespace GiocoOca
     public class Pedina
     {
         //attributi identificativi
-        private int _idGiocatore;
-        private int _numeroCaselle;
-        private string _tipoPedina;
+        private int _idGiocatore;   //numero del giocatore [1-6]
+        private int _numeroCaselle; //numero delle caselle
+        private string _tipoPedina; //sono un giocatore o un bot
 
         //attributi di stato
-        private int _posizioneAttuale;
-        private int _tiroPrecedente; 
-        private int _numeroTurniAttendere;
-        private bool _inAttesa;
-        private bool _inPrigione;
-        private bool _inPozzo;
-        private bool _vincitore;
-
-       // public bool inGalera = false;
+        private int _posizioneAttuale;  //posizione della pedina
+        private int _tiroPrecedente;        //tiro precedente
+        private int _numeroTurniAttendere;  //numero turni d'attesa
+        private bool _inAttesa;     //sono nella locanda?
+        private bool _inPrigione;   //sono in prigione?
+        private bool _inPozzo;      //sono nel pozzo?
+        private bool _vincitore;    //sono nell'ultima casella?
 
         public Pedina(int id, int numCas, string tipoPedina)
         {
@@ -93,57 +91,42 @@ namespace GiocoOca
         public int muovi(int tiro)
         {
             _tiroPrecedente = tiro;
-
-            //se la pedina deve stare ferma per tot turni
-            //if (_numeroTurniAttendere != 0)
-           // {
-                //se sono in attesa non posso muovermi e resto dove sono
-                //se devo rimanere fermo per un numero di turni prestabilito
-                //if (_numeroTurniAttendere != 0)
-                //faccio passare un turno
-                //_numeroTurniAttendere--;
-            //}
-            //se sono in prigione
-            //else if (_inPrigione == true)
-            //{ }
-            //se sono nel pozzo
-            //else if (_inPozzo == true) { }
-            //se non sono bloccato
-            if (_numeroTurniAttendere == 0 && _inPozzo == false && _inPrigione == false)
+            //se sono capitato sulla locanda
+            if (_numeroTurniAttendere != 0)
+                //decremento di uno i turni d'attesa
+                _numeroTurniAttendere--;
+            //altrimenti se non sono nella locanda e non sono in pozzo o prigione
+            else if(_inPozzo == false && _inPrigione == false)
             {
-                //altrimenti mi sposto
-                _inAttesa = false;
-                _inPozzo = false;
-                _inPrigione = false;
+                //aggiorno la posizione
                 _posizioneAttuale += tiro;
+                
+                //se con il tiro ho superato la fine devo tornare indietro
+                if (_posizioneAttuale > _numeroCaselle)
+                    _posizioneAttuale = _numeroCaselle - (_posizioneAttuale - _numeroCaselle);
+
+                //controllo se la pedina è arrivata nell'ultima casella
+                if (_posizioneAttuale == _numeroCaselle)
+                    _vincitore = true;
             }
-
-            //se con il tiro ho superato la fine devo tornare indietro
-            if (_posizioneAttuale > _numeroCaselle)
-                _posizioneAttuale = _numeroCaselle - (_posizioneAttuale - _numeroCaselle);
-
-            //controllo se la pedina è arrivata nell'ultima casella
-            if (_posizioneAttuale == _numeroCaselle)
-                _vincitore = true;
-            Console.WriteLine(_numeroTurniAttendere);
             return _posizioneAttuale;
         }//end muovi
 
-        public void attendi(int numeroTurni)
+        /*
+         * Metodo per mettere in attesa la pedina quando finisce nella locanda.
+         * Controllo se la pedina è in attesa e nel caso la metto in attesa e 
+         * setto i turni d'attesa altrimenti se il numero di turni d'attesa è 
+         * 0 non devo essere in attesa.
+         */
+        public void attendi(int banana)
         {
-            //se la pedina non è in attesa
             if (!_inAttesa)
             {
-                //la metto in attesa
                 _inAttesa = true;
-                //e setto il numero di turni d'attendere
-                _numeroTurniAttendere = numeroTurni;
+                _numeroTurniAttendere = banana;
             }
-            //se è in attesa decremento il turno
-            else
-            {
-                _numeroTurniAttendere--;
-            }
+            else if(_numeroTurniAttendere == 0)
+                _inAttesa = false;
         }//end attendi
     }
 }

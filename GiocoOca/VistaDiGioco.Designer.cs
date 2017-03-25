@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.bottoneRegole = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.labelLancioDadi = new System.Windows.Forms.Label();
             this.bottoneLanciaDadi = new System.Windows.Forms.Button();
             this.pannelloTavolo = new System.Windows.Forms.Panel();
-            this.bottoneRegole = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -49,6 +49,18 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(784, 521);
             this.panel1.TabIndex = 0;
+            // 
+            // bottoneRegole
+            // 
+            this.bottoneRegole.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.bottoneRegole.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
+            this.bottoneRegole.Location = new System.Drawing.Point(578, 442);
+            this.bottoneRegole.Name = "bottoneRegole";
+            this.bottoneRegole.Size = new System.Drawing.Size(94, 46);
+            this.bottoneRegole.TabIndex = 5;
+            this.bottoneRegole.Text = "Regole";
+            this.bottoneRegole.UseVisualStyleBackColor = true;
+            this.bottoneRegole.Click += new System.EventHandler(this.bottoneRegole_Click);
             // 
             // label1
             // 
@@ -88,18 +100,6 @@
             this.pannelloTavolo.Name = "pannelloTavolo";
             this.pannelloTavolo.Size = new System.Drawing.Size(760, 400);
             this.pannelloTavolo.TabIndex = 0;
-            // 
-            // bottoneRegole
-            // 
-            this.bottoneRegole.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.bottoneRegole.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
-            this.bottoneRegole.Location = new System.Drawing.Point(578, 442);
-            this.bottoneRegole.Name = "bottoneRegole";
-            this.bottoneRegole.Size = new System.Drawing.Size(94, 46);
-            this.bottoneRegole.TabIndex = 5;
-            this.bottoneRegole.Text = "Regole";
-            this.bottoneRegole.UseVisualStyleBackColor = true;
-            this.bottoneRegole.Click += new System.EventHandler(this.bottoneRegole_Click);
             // 
             // VistaDiGioco
             // 

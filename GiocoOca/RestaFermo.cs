@@ -15,13 +15,18 @@ namespace GiocoOca
 
         public override void effetto(TavoloDaGioco t, Pedina p, EventHandler<ArgPedina> evento)
         {
+            //se la casella è il pozzo
             if (_idCasella == POZZO)
             {
+                //controllo se in pozzo c'è nessuno
                 if (t.inPozzo != null && t.inPozzo != p)
+                    //se c'è un'altra pedina la libero
                     t.inPozzo.inPozzo = false;
+                //poi prendo il posto in pozo
                 p.inPozzo = true;
                 t.inPozzo = p;
             }
+            //altrimenti se la casella è la prigione
             else if(_idCasella == PRIGIONE)
             {
                 //controllo se in prigione c'è nessuno
@@ -33,7 +38,6 @@ namespace GiocoOca
                 p.inPrigione = true;
                 t.inPrigione = p;
             }
-            //Console.WriteLine(this.idCasella + " " + _idCasella + " " + t.inPozzo + " " + t.inPrigione + " " + p.inPozzo + p.inPrigione);
             evento.Invoke(this, new ArgPedina(p));
         }
     }
