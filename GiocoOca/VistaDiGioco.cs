@@ -21,58 +21,63 @@ namespace GiocoOca
         private List<Label> LabelGiocatori;     //nome dei giocatori nel box
         private List<Button> BottoniGiocatori;  //quadrati colorati nel box
         //array contenente tutti i colori delle pedine
-
+        //i colori sono assegnati ad ogni giocatore in
+        //base al suo id
         private Color[] colori = {
                    Color.FromArgb(255, 255, 0, 0),     //rosso
                    Color.FromArgb(255, 143, 0, 255),   //viola
                    Color.FromArgb(255, 0, 255, 0),     //verde
                    Color.FromArgb(255, 0, 0, 255),     //blu   
-                   Color.FromArgb(255, 255, 20, 147),   //arancione
+                   Color.FromArgb(255, 255, 20, 147),  //arancione
                    Color.FromArgb(255, 0, 0, 0)        //nero
                    };
-
+        //evento che permette di rigiocare la partita
         public EventHandler OnRigioca_Clicked;
 
         public VistaDiGioco(int numeroCaselle, int numeroGiocatori)
         {
-            this.numCaselle       = numeroCaselle;
-            this.numGiocatori     = numeroGiocatori;
+            this.numCaselle = numeroCaselle;
+            this.numGiocatori = numeroGiocatori;
             this.caselle = new List<Button>();
             this.pedine = new List<Button>();
             this.LabelGiocatori = new List<Label>();
             this.BottoniGiocatori = new List<Button>();
             this.GruppoGiocatori = new GroupBox();
-            Console.WriteLine(caselle.Count);
 
             InitializeList();
             InitializeComponent();
+
             pannelloTavolo.BackgroundImage = Properties.Resources.Sfondo;
             pannelloTavolo.BorderStyle = BorderStyle.FixedSingle;
 
             loadCaselle();  //disegno le caselle
-            inizializza();
+            inizializza();  //disegno le pedine
             loadIndice();   //disegno l'indice dei giocatori
-            
         }//end costruttore
 
-        //COMMENTO DA AGGIUNGERE
+        //proprietà
+        //passo il bottone lancia dadi al controllore
+        public Button getButtonLanciaDadi
+        {
+            get { return bottoneLanciaDadi; }
+        }
+        //passo il bottone reset al controllore
+        public Button getButtonReset
+        {
+            get { return bottoneReset; }
+        }
+        //setto la labelLancioDadi con il valore del lancio dei dadi
+        public string setLabelLancioDadi
+        {
+            set { labelLancioDadi.Text = value; }
+        }
+
+        //metodo pubblico che richiama il caricamento delle pedine
         public void inizializza()
         {
-            loadPedine();   //disegno le pedine
-        }//end inizializza
+            loadPedine();
+        }
 
-        //metodo per passare il bottone lancia dadi al controllore
-        public Button getButtonLanciaDadi()
-        {
-            return bottoneLanciaDadi;
-        }//end getButtonLanciaDadi
-
-        //metodo per settare la label con il lancio dei dadi
-        public void setLabelLancioDadi(string s)
-        {
-            labelLancioDadi.Text = s;
-        }//end setLabelLancioDadi
-        
         //metodo per inizializzare le liste
         private void InitializeList()
         {
@@ -112,7 +117,6 @@ namespace GiocoOca
                 caselle[i].Margin = new Padding(0);
                 caselle[i].ForeColor = Color.FromArgb(255, 32, 32, 32);
 
-                #region Posiziono le caselle
                 if (numCaselle == 63)
                 {
                     caselle[i].Location = new Point(w, h);
@@ -130,8 +134,6 @@ namespace GiocoOca
                         h += caselle[i].Height;
                     else if (i <= 63)
                         w -= caselle[i].Width;
-                    else
-                        throw new Exception("Problema durante la creazione delle caselle!");
                 }
                 else
                 {
@@ -154,10 +156,7 @@ namespace GiocoOca
                         h -= caselle[i].Width;
                     else if (i <= 90)
                         w += caselle[i].Width;
-                    else
-                        throw new Exception("Problema durante la creazione delle caselle!");
                 }
-                #endregion
 
                 pannelloTavolo.Controls.Add(caselle[i]);
                 disegnaCaselle();
@@ -191,14 +190,14 @@ namespace GiocoOca
             }
         }//end loadPedine
         
-        //carico l'indice dei giocatori
+        //metodo che carica l'indice dei giocatori
         private void loadIndice()
         {
             GruppoGiocatori.Location = new Point(12, 418);  //posizione
             GruppoGiocatori.Size = new Size(200, 91);   //dimensione
             GruppoGiocatori.Text = "Giocatori"; 
             GruppoGiocatori.TabStop = false;
-            GruppoGiocatori.TabIndex = 7;
+            //GruppoGiocatori.TabIndex = 7;
             
             panel1.Controls.Add(GruppoGiocatori);
 
@@ -230,8 +229,6 @@ namespace GiocoOca
                         LabelGiocatori[i].Location = new Point(122, 65);
                         BottoniGiocatori[i].Location = new Point(100, 65);
                         break;
-                    default:
-                        throw new Exception("Problema con l'indice dei giocatori");
                 }
                 //setto lo stile delle label e dei riquadri
                 LabelGiocatori[i].AutoSize = true;
@@ -248,13 +245,11 @@ namespace GiocoOca
                 GruppoGiocatori.Controls.Add(LabelGiocatori[i]);
                 GruppoGiocatori.Controls.Add(BottoniGiocatori[i]);
             }
-             
         }//end loadIndice
 
         //metodo per inserire le immagini dentro le caselle
         private void disegnaCaselle()
         {
-            
             for(int i = 0; i < caselle.Count; i++)
             {
                 if ((i != 0 && i % 9 == 0 || i % 9 == 5) && i != numCaselle) //caselle oca
@@ -285,9 +280,9 @@ namespace GiocoOca
         //metodo per calcolare la posizione della pedina dentro la casella
         private Point posizionePedina(int numPedina)
         {
-            Point posizione;
+            Point posizione = new Point(0, 0);
             if (numCaselle == 63)
-            {
+            
                 switch (numPedina)
                 {
                     case 0:
@@ -308,12 +303,10 @@ namespace GiocoOca
                     case 5:
                         posizione = new Point(28, 32);
                         break;
-                    default:
-                        throw new Exception("Problema con le pedine");
                 }
-            }
-            else
-            {
+            
+            else if(numCaselle == 90)
+            
                 switch (numPedina)
                 {
                     case 0:
@@ -334,28 +327,38 @@ namespace GiocoOca
                     case 5:
                         posizione = new Point(23, 26);
                         break;
-                    default:
-                        throw new Exception("Problema con le pedine");
                 }
-            }
-            return posizione;
-        }
-
-        //metodo che termina il gioco 
-        public void SetTextbutt(string s)
-        {
             
-            MessageBox.Show("Il Giocatore " + s + " ha vinto la partita...", 
-                "Vittoria!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-            rigiocare();
-        }
-        //overload del metodo SetTextbutt per terminare il gioco in caso di parità
-        public void SetTextbutt()
+            return posizione;
+        }//end posizionePedina
+
+        //metodo che stampa un messaggio contenente il vincitore della partita
+        public void comunicaVincitore(string s)
         {
-            MessageBox.Show("Nessun giocatore ha vinto la partita...",
-                "Parità", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+            string testo = "Il Giocatore " + s + " ha vinto la pertita...";
+            string titolo = "Vittoria!";
+            MessageBoxButtons bottoni = MessageBoxButtons.OK;
+            MessageBoxIcon icona = MessageBoxIcon.Asterisk;
+            MessageBox.Show(testo, titolo, bottoni, icona);
             rigiocare();
         }
+        //overload del metodo comunicaVincitore per terminare il gioco in caso di parità
+        public void comunicaVincitore()
+        {
+            string testo = "Nessun giocatore ha vinto la partita...";
+            string titolo = "Parità";
+            MessageBoxButtons bottoni = MessageBoxButtons.OK;
+            MessageBoxIcon icona = MessageBoxIcon.Asterisk;
+            MessageBox.Show(testo, titolo, bottoni, icona);
+            rigiocare();
+        }
+        /*
+         * Il metodo viene chiamato dopo la vittoria di un giocatore 
+         * o in caso di parità, chiede all'utente se vuole ripetere la 
+         * partita mantenendo le stesse impostazioni; in caso affermativo 
+         * si invocas il metodo OnRigioca_Clicked che comunica al controllore
+         * di ricaricare la partita, altrimenti l'applicazione termina 
+         */
         private void rigiocare()
         {
             string testo = "Ripetere la partita?";

@@ -20,11 +20,11 @@ namespace GiocoOca
          * Il metodo sposta la pedina in una data posizione (destinazione) passata 
          * all'atto della creazione 
          */
-        public override void effetto(TavoloDaGioco t, Pedina p, EventHandler<ArgPedina> evento)
+        public override void effetto(TavoloDaGioco t, Pedina p, EventHandler<ArgEvento<Pedina>> evento)
         {
             int tiro = p.muovi(_destinazione - p.posizione);
             t.sposta(p, tiro);
-            evento.Invoke(this, new ArgPedina(p));
+            evento.Invoke(this, new ArgEvento<Pedina>(p));
         }
     }
 }

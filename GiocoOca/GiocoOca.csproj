@@ -47,7 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArgPedina.cs" />
+    <Compile Include="ArgEvento.cs" />
     <Compile Include="Casella.cs" />
     <Compile Include="Controllore.cs" />
     <Compile Include="Dado.cs" />
