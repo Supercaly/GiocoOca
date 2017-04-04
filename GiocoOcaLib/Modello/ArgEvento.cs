@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GiocoOca
+namespace GiocoOca.Modello
 {
     public class ArgEvento<T> : EventArgs
     {

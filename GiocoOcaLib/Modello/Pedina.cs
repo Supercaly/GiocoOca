@@ -1,5 +1,5 @@
 ﻿using System;
-namespace GiocoOca
+namespace GiocoOca.Modello
 {
     public class Pedina
     {
@@ -118,12 +118,12 @@ namespace GiocoOca
          * setto i turni d'attesa altrimenti se il numero di turni d'attesa è 
          * 0 non devo essere in attesa.
          */
-        public void attendi(int banana)
+        public void attendi(int numTurniAttesa)
         {
             if (!_inAttesa)
             {
                 _inAttesa = true;
-                _numeroTurniAttendere = banana;
+                _numeroTurniAttendere = numTurniAttesa;
             }
             else if(_numeroTurniAttendere == 0)
                 _inAttesa = false;

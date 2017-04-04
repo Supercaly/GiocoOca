@@ -1,5 +1,5 @@
 ﻿using System;
-namespace GiocoOca
+namespace GiocoOca.Modello
 {
     public abstract class Casella
     {

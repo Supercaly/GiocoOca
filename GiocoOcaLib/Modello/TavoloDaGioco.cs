@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GiocoOca
+namespace GiocoOca.Modello
 {
     public class TavoloDaGioco
     {
@@ -20,7 +20,6 @@ namespace GiocoOca
         private bool _vincitore;    //pedina che ha vinto la partita
         private Pedina _inPrigione; //pedina dentro la prigione
         private Pedina _inPozzo;    //pedina dentro al pozzo
-        private int _lancio;        //lancio del dado effettuato dal giocatore
         private bool _rigiocare;    //indica se il giocatore vuole rigiocare la partita
 
         //eventi 
@@ -46,11 +45,6 @@ namespace GiocoOca
         }//end costruttore
 
         //Proprietà 
-        //ritorna il lancio del dado effettuato dal giocatore
-        public int lancio
-        {
-            get { return _lancio; }
-        }
         //ritorna e setta il valore rigiocare
         public bool rigiocare
         {
@@ -111,7 +105,6 @@ namespace GiocoOca
             //lancio il dado, altrimenti passo 0 come lancio
             if (!p.inAttesa && _inPrigione != p && _inPozzo != p)
                  tiro = lanciaDadi();
-            _lancio = tiro;
             OnValueDadi_Updated.Invoke(this, new ArgEvento<int>(tiro));
             sposta(p, p.muovi(tiro));
             OnPosizione_Updated.Invoke(this, new ArgEvento<Pedina>(p));
@@ -169,12 +162,6 @@ namespace GiocoOca
                 else
                     _caselle.Add(new Normale(i));
             }
-            //foreach (Casella c in _caselle)
-            //{
-            //    Console.WriteLine(c.idCasella + " " + c.GetType());
-            //    //if (c is Prigione)
-            //    //    Console.WriteLine(c.idCasella);
-            //}
         }
 
         //metodo che inizializza le variabili principali
@@ -185,7 +172,6 @@ namespace GiocoOca
             _vincitore = false;
             _inPrigione = null;
             _inPozzo = null;
-            _lancio = 0;
 
             popolaCaselle();
             popolaPedine();

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GiocoOca
+namespace GiocoOca.Modello
 {
     class RestaFermo : Casella
     {

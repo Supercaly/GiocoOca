@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace GiocoOca
+namespace GiocoOca.Vista
 {
     /*
      * La Classe VistaDiGioco contiene tutto il necessario per far funzionare 
@@ -335,7 +335,7 @@ namespace GiocoOca
         //metodo che stampa un messaggio contenente il vincitore della partita
         public void comunicaVincitore(string s)
         {
-            string testo = "Il Giocatore " + s + " ha vinto la pertita...";
+            string testo = "Il Giocatore " + s + " ha vinto la partita...";
             string titolo = "Vittoria!";
             MessageBoxButtons bottoni = MessageBoxButtons.OK;
             MessageBoxIcon icona = MessageBoxIcon.Asterisk;

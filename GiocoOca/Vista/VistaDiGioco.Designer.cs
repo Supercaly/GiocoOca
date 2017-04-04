@@ -1,4 +1,4 @@
-﻿namespace GiocoOca
+﻿namespace GiocoOca.Vista
 {
     partial class VistaDiGioco
     {

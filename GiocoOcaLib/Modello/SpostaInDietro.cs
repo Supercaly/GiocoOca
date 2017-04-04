@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GiocoOca
+namespace GiocoOca.Modello
 {
     class SpostaInDietro : Casella
     {

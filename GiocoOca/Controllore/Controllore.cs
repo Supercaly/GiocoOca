@@ -1,8 +1,10 @@
 ﻿using System;
+using GiocoOca.Modello;
+using GiocoOca.Vista;
 
-namespace GiocoOca
+namespace GiocoOca.Controller
 {
-    class Controllore
+    public class Controllore
     {
         private TavoloDaGioco _tavolo;
         private VistaDiGioco _vista;
