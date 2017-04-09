@@ -148,7 +148,7 @@ namespace GiocoOca.Modello
             {
                 //istanzio le caselle Oca e la casella Ponte
                 if ((i == 6 || i % 9 == 0 || i % 9 == 5) && i != _numCaselle)
-                    _caselle.Add(new SpostaInAvanti(i));
+                    _caselle.Add(new SpostaAvanti(i));
                 //istanzio la casella Locanda
                 else if (i == 19)
                     _caselle.Add(new Locanda());

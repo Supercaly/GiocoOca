@@ -2,10 +2,10 @@
 
 namespace GiocoOca.Modello
 {
-    class SpostaInAvanti : Casella
+    class SpostaAvanti : Casella
     {
 
-        public SpostaInAvanti(int idCasella) : base(idCasella)
+        public SpostaAvanti(int idCasella) : base(idCasella)
         {
         }
 

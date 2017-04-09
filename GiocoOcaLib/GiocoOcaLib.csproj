@@ -47,7 +47,7 @@
     <Compile Include="Modello\Normale.cs" />
     <Compile Include="Modello\Pedina.cs" />
     <Compile Include="Modello\RestaFermo.cs" />
-    <Compile Include="Modello\SpostaInAvanti.cs" />
+    <Compile Include="Modello\SpostaAvanti.cs" />
     <Compile Include="Modello\SpostaInDietro.cs" />
     <Compile Include="Modello\TavoloDaGioco.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
