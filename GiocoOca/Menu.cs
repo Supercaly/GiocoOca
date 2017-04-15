@@ -65,7 +65,7 @@ namespace GiocoOca
             Application.Exit();
         }
 
-        void radioButton_CheckedChanged(object sender, EventArgs e)
+        private void radioButton_CheckedChanged(object sender, EventArgs e)
         {
             RadioButton rb = sender as RadioButton;
             if (rb != null && rb.Checked)
@@ -74,7 +74,7 @@ namespace GiocoOca
             }
         }
 
-        void radioButton_CheckedChanged2(object sender, EventArgs e)
+        private void radioButton_CheckedChanged2(object sender, EventArgs e)
         {
             RadioButton rb = sender as RadioButton;
             if (rb != null && rb.Checked)

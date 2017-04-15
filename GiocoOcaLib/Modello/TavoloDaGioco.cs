@@ -40,7 +40,7 @@ namespace GiocoOca.Modello
             _dado1        = new Dado(7);
             _dado2        = new Dado(25);
             _rigiocare    = false;
-
+            _vincitore    = false;
             inizializza();
         }//end costruttore
 
@@ -79,7 +79,7 @@ namespace GiocoOca.Modello
             {
                 foreach (Pedina p in _pedine)
                 {
-                    if (rigiocare == false)
+                    if (_rigiocare == false)
                     {
                         if (p.tipoPedina == GIOCATORE)
                             turnoGiocatore(p);
