@@ -3,7 +3,7 @@ using System;
 
 namespace GiocoOca.Modello
 {
-    class SpostaAvanti : Casella
+    public class SpostaAvanti : Casella
     {
 
         public SpostaAvanti(int idCasella) : base(idCasella)

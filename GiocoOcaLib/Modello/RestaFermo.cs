@@ -2,7 +2,7 @@
 
 namespace GiocoOca.Modello
 {
-    class RestaFermo : Casella
+    public class RestaFermo : Casella
     {
         private const int POZZO = 31;
         private const int PRIGIONE = 52;

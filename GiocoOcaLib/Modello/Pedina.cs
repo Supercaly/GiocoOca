@@ -1,5 +1,4 @@
-﻿using System;
-namespace GiocoOca.Modello
+﻿namespace GiocoOca.Modello
 {
     public class Pedina
     {

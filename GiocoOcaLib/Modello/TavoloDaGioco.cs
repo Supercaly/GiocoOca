@@ -27,7 +27,7 @@ namespace GiocoOca.Modello
         public EventHandler<ArgEvento<int>> OnValueDadi_Updated;       //invocato ogni volta che il dado viene lanciato
         public EventHandler<ArgEvento<Pedina>> OnPosizione_Updated;    //invocato quando la posizione di una pedina cambia 
         public EventHandler<ArgEvento<Pedina>> OnVittoria;             //invocato quando una pedina arriva alla fine
-        
+
         /*
          * Al costruttore della classe è passato il numero delle caselle [63-90] 
          * e il numero di giocatori [2-6] in modo da creare delle liste contenenti
@@ -43,7 +43,6 @@ namespace GiocoOca.Modello
             _vincitore    = false;
             inizializza();
         }//end costruttore
-
         //Proprietà 
         //ritorna e setta il valore rigiocare
         public bool rigiocare
@@ -121,7 +120,7 @@ namespace GiocoOca.Modello
         //metodo per spostare le pedina
         public void sposta(Pedina p, int posizione)
         {
-            _caselle[posizione - 1].effetto(this, p, OnEffetto_Applied);
+            _caselle[posizione].effetto(this, p, OnEffetto_Applied);
         }
 
         //metodo che simula il lancio dei dadi 
@@ -144,10 +143,10 @@ namespace GiocoOca.Modello
 
         private void popolaCaselle()
         {
-            for (int i = 1; i <= _numCaselle; i++)
+            for(int i = 0; i <= _numCaselle; i++)
             {
                 //istanzio le caselle Oca e la casella Ponte
-                if ((i == 6 || i % 9 == 0 || i % 9 == 5) && i != _numCaselle)
+                if ((i == 6 || i % 9 == 0 || i % 9 == 5) && i != _numCaselle && i != 0)
                     _caselle.Add(new SpostaAvanti(i));
                 //istanzio la casella Locanda
                 else if (i == 19)
@@ -162,6 +161,7 @@ namespace GiocoOca.Modello
                 else
                     _caselle.Add(new Normale(i));
             }
+            
         }
 
         //metodo che inizializza le variabili principali
@@ -176,6 +176,9 @@ namespace GiocoOca.Modello
             popolaCaselle();
             popolaPedine();
         }//end load
-
+        public void gioca_test(int pedina, int tiro)
+        {
+            sposta(_pedine[pedina], _pedine[pedina].muovi(tiro));
+        }
     }//end classe
 }

@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GiocoOca.Modello
 {
-    class SpostaInDietro : Casella
+    public class SpostaInDietro : Casella
     {
         private int _destinazione;
 

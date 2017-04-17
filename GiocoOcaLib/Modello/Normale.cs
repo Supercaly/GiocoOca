@@ -2,7 +2,7 @@
 
 namespace GiocoOca.Modello
 {
-    class Normale : Casella
+    public class Normale : Casella
     {
         public Normale(int numCasella) : base(numCasella)
         {
