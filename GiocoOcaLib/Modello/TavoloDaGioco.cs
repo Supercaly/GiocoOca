@@ -176,9 +176,11 @@ namespace GiocoOca.Modello
             popolaCaselle();
             popolaPedine();
         }//end load
+
+        //metodo per giocare un turno dando al programmatore pieno controllo sull'esito
         public void gioca_test(int pedina, int tiro)
         {
             sposta(_pedine[pedina], _pedine[pedina].muovi(tiro));
-        }
+        }//end gioca_test
     }//end classe
 }

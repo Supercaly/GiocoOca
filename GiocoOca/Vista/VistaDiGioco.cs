@@ -356,7 +356,7 @@ namespace GiocoOca.Vista
          * Il metodo viene chiamato dopo la vittoria di un giocatore 
          * o in caso di parità, chiede all'utente se vuole ripetere la 
          * partita mantenendo le stesse impostazioni; in caso affermativo 
-         * si invocas il metodo OnRigioca_Clicked che comunica al controllore
+         * si invoca il metodo OnRigioca_Clicked che comunica al controllore
          * di ricaricare la partita, altrimenti l'applicazione termina 
          */
         private void rigiocare()

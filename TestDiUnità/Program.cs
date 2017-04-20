@@ -14,13 +14,8 @@ namespace TestDiUnità
         {
             //classe di testing
             Test test = new Test();
-            bool terminare = false;
             //avvio il test
             test.test();
-           //uscita
-           // Console.WriteLine("############################");
-            //Console.WriteLine("Premere un tasto per uscire...");
-            //Console.ReadKey();
         }
     }
 }

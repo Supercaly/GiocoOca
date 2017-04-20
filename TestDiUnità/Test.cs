@@ -6,18 +6,12 @@ namespace TestDiUnità
 {
     class Test
     {
-        private Pedina pedina;
-        private List<Casella> casella;
-        int id = 0;
-        int numeroCaselle;
-        string tipoPedina = "GIOCATORE";
-        
+        private const string TIPO_PEDINA = "GIOCATORE";
+        private int numeroCaselle;
+
         public Test()
         {
-            id = 0;
             numeroCaselle = 63;
-            tipoPedina = "GIOCATORE";
-            casella = new List<Casella>();
         }//end costruttore
 
         //corpo principale della classe di testing
@@ -30,7 +24,11 @@ namespace TestDiUnità
             Console.WriteLine("   Programma di Testing");
             Console.WriteLine("############################\n");
 
-            creaPedina();
+            Console.Write("Inserire numero di caselle [63/90]: ");
+            int.TryParse(Console.ReadLine(), out numeroCaselle);
+            if (numeroCaselle == 0)
+                numeroCaselle = 63;
+
             do
             { 
                 scelta = menu();
@@ -54,19 +52,6 @@ namespace TestDiUnità
             while (!terminare);
         }
 
-        //creo la pedina con le specifiche scelte dall'utente
-        private void creaPedina()
-        {
-            Console.WriteLine("######################################################################");
-            Console.Write("Inserire numero di caselle [63/90]: ");
-            int.TryParse(Console.ReadLine(), out numeroCaselle);
-            pedina = new Pedina(id, numeroCaselle, tipoPedina);
-            Console.WriteLine("Creazione Pedina con ID: " + pedina.idGiocatore 
-                + ", Numero Caselle: " + numeroCaselle 
-                + ", di tipo: " + pedina.tipoPedina);
-            Console.WriteLine("######################################################################\n");
-        }
-
         //menu principale
         private int menu()
         {
@@ -85,9 +70,18 @@ namespace TestDiUnità
         //testo il calcolo della posizione della pedina
         private void testaPosizione()
         {
+            Pedina pedina;
             int input = 0;
             int output = 0;
             int valAtt = 0;
+
+            //creo una pedina per i test con le specifiche dell'utente
+            Console.WriteLine("######################################################################");
+            pedina = new Pedina(0, numeroCaselle, TIPO_PEDINA);
+            Console.WriteLine("Creazione Pedina con ID: " + pedina.idGiocatore
+                + ", Numero Caselle: " + numeroCaselle
+                + ", di tipo: " + pedina.tipoPedina);
+            Console.WriteLine("######################################################################\n");
 
             Console.Write("Inserire il valore lancio dei dadi:");
             int.TryParse(Console.ReadLine(), out input);
@@ -110,8 +104,10 @@ namespace TestDiUnità
                 pedina.attendi(3);
             }
 
+            //eseguo il test
             output = pedina.muovi(input);
             Console.WriteLine("La pedina è in posizione: " + output);
+
             if (pedina.vincitore == true)
                 Console.WriteLine("La pedina ha vinto la partita");
             if (output == valAtt)
@@ -120,6 +116,7 @@ namespace TestDiUnità
             Console.WriteLine("Test non superato! :(");
         }
 
+        //testo l'effetto delle caselle
         private void testaEffetto()
         {
             int scelta = 0;
@@ -165,9 +162,10 @@ namespace TestDiUnità
             }
         }
 
+        //metodo invocato all'applicazione degli effetti
         private void applicaEffetto(object sender, ArgEvento<Pedina> e)
         {
-            Console.WriteLine("Giocatore: " + e.getValore.idGiocatore
+            Console.WriteLine("\tGiocatore: " + e.getValore.idGiocatore
                 + " in posizione: " + e.getValore.posizione
                 + " su una casella di tipo: " + sender.ToString());
         }

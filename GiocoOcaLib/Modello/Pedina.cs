@@ -94,7 +94,7 @@
             if (_numeroTurniAttendere != 0)
                 //decremento di uno i turni d'attesa
                 _numeroTurniAttendere--;
-            //altrimenti se non sono nella locanda e non sono in pozzo o prigione
+            //altrimenti se non sono nella locanda e non sono nel pozzo o in prigione
             else if(_inPozzo == false && _inPrigione == false)
             {
                 //aggiorno la posizione
