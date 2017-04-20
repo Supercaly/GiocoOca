@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace GiocoOca
+namespace GiocoOca.Vista
 {
     /*
      * La Classe VistaDiGioco contiene tutto il necessario per far funzionare 
@@ -21,61 +21,63 @@ namespace GiocoOca
         private List<Label> LabelGiocatori;     //nome dei giocatori nel box
         private List<Button> BottoniGiocatori;  //quadrati colorati nel box
         //array contenente tutti i colori delle pedine
-
+        //i colori sono assegnati ad ogni giocatore in
+        //base al suo id
         private Color[] colori = {
                    Color.FromArgb(255, 255, 0, 0),     //rosso
                    Color.FromArgb(255, 143, 0, 255),   //viola
                    Color.FromArgb(255, 0, 255, 0),     //verde
                    Color.FromArgb(255, 0, 0, 255),     //blu   
-                   Color.FromArgb(255, 255, 20, 147),   //arancione
+                   Color.FromArgb(255, 255, 20, 147),  //arancione
                    Color.FromArgb(255, 0, 0, 0)        //nero
                    };
-        
+        //evento che permette di rigiocare la partita
+        public EventHandler OnRigioca_Clicked;
+
         public VistaDiGioco(int numeroCaselle, int numeroGiocatori)
         {
-            this.numCaselle       = numeroCaselle;
-            this.numGiocatori     = numeroGiocatori;
-            this.caselle          = new List<Button>();
-            this.pedine           = new List<Button>();
-            this.LabelGiocatori   = new List<Label>();
+            this.numCaselle = numeroCaselle;
+            this.numGiocatori = numeroGiocatori;
+            this.caselle = new List<Button>();
+            this.pedine = new List<Button>();
+            this.LabelGiocatori = new List<Label>();
             this.BottoniGiocatori = new List<Button>();
-            this.GruppoGiocatori  = new GroupBox();
+            this.GruppoGiocatori = new GroupBox();
+
             InitializeList();
             InitializeComponent();
-            
-        }//end costruttore
 
-        private void Vista2_Load(object sender, EventArgs e)
-        {
-            
             pannelloTavolo.BackgroundImage = Properties.Resources.Sfondo;
             pannelloTavolo.BorderStyle = BorderStyle.FixedSingle;
-            
-            try
-            {
-                loadCaselle();  //disegno le caselle
-                loadPedine();   //disegno le pedine
-                loadIndice();   //disegno l'indice dei giocatori
-            }
-            catch (Exception)
-            {
-                //DA GESTIRE MOOOLTO MEGLIO 
-            }
-            
-        }//end Vista2_Load
 
-        //metodo per passare il bottone lancia dadi al controllore
-        public Button getButtonLanciaDadi()
-        {
-            return bottoneLanciaDadi;
-        }//end getButtonLanciaDadi
+            loadCaselle();  //disegno le caselle
+            inizializza();  //disegno le pedine
+            loadIndice();   //disegno l'indice dei giocatori
+        }//end costruttore
 
-        //metodo per settare la label con il lancio dei dadi
-        public void setLabelLancioDadi(String s)
+        //proprietà
+        //passo il bottone lancia dadi al controllore
+        public Button getButtonLanciaDadi
         {
-            labelLancioDadi.Text = s;
-        }//end setLabelLancioDadi
-        
+            get { return bottoneLanciaDadi; }
+        }
+        //passo il bottone reset al controllore
+        public Button getButtonReset
+        {
+            get { return bottoneReset; }
+        }
+        //setto la labelLancioDadi con il valore del lancio dei dadi
+        public string setLabelLancioDadi
+        {
+            set { labelLancioDadi.Text = value; }
+        }
+
+        //metodo pubblico che richiama il caricamento delle pedine
+        public void inizializza()
+        {
+            loadPedine();
+        }
+
         //metodo per inizializzare le liste
         private void InitializeList()
         {
@@ -106,16 +108,15 @@ namespace GiocoOca
                 else
                     caselle[i].Size = new Size(40, 40);
 
-                caselle[i].Enabled = false;
+                caselle[i].Enabled = true;
                 caselle[i].Text = i.ToString();
                 caselle[i].TabStop = false;
                 caselle[i].FlatStyle = FlatStyle.Flat;
                 caselle[i].FlatAppearance.BorderSize = 0;
-                caselle[i].ForeColor = Color.FromArgb(255, 0, 255, 0);
                 caselle[i].Font = new Font(caselle[i].Font, FontStyle.Bold);
                 caselle[i].Margin = new Padding(0);
-               
-                #region Posiziono le caselle
+                caselle[i].ForeColor = Color.FromArgb(255, 32, 32, 32);
+
                 if (numCaselle == 63)
                 {
                     caselle[i].Location = new Point(w, h);
@@ -133,8 +134,6 @@ namespace GiocoOca
                         h += caselle[i].Height;
                     else if (i <= 63)
                         w -= caselle[i].Width;
-                    else
-                        throw new Exception("Problema durante la creazione delle caselle!");
                 }
                 else
                 {
@@ -157,15 +156,11 @@ namespace GiocoOca
                         h -= caselle[i].Width;
                     else if (i <= 90)
                         w += caselle[i].Width;
-                    else
-                        throw new Exception("Problema durante la creazione delle caselle!");
                 }
-                #endregion
 
-                caselle[i].MouseHover += Mostra_Tipo(this, new EventArgs);
                 pannelloTavolo.Controls.Add(caselle[i]);
                 disegnaCaselle();
-                caselle[i].Invalidate();
+                caselle[i].Update();
             }
         }//end loadCaselle
 
@@ -174,29 +169,35 @@ namespace GiocoOca
         {
             for (int i = 0; i < numGiocatori; i++)
             {
-                pedine[i].BackColor = colori[i];
-                pedine[i].Location = posizionePedina(i);
+                pedine[i].BackColor = colori[i];    //setto il colore
+                pedine[i].Location = posizionePedina(i);    //imposto la posizione
+                //setto la dimensione del riquadro
                 if (numCaselle == 63)
                     pedine[i].Size = new Size(14, 14);
                 else
                     pedine[i].Size = new Size(12, 12);
-                pedine[i].Text = "";
-                pedine[i].Name = "Giocatore " + i;
+                pedine[i].Text = "";    
+                pedine[i].Name = "Giocatore " + i;  //nome della pedina
                 pedine[i].TabStop = false;
+                pedine[i].Enabled = false; 
+                //imposto i bordi
                 pedine[i].FlatStyle = FlatStyle.Flat;
                 pedine[i].FlatAppearance.BorderSize = 2;
                 pedine[i].FlatAppearance.BorderColor = Color.FromArgb(255, 255, 255, 255);
+                caselle[i].Invalidate();
+                //aggiungo tutte le pedine nella casella 0
                 caselle[0].Controls.Add(pedine[i]);
             }
         }//end loadPedine
-
+        
+        //metodo che carica l'indice dei giocatori
         private void loadIndice()
         {
-            GruppoGiocatori.Location = new Point(12, 418);
-            GruppoGiocatori.Size = new Size(200, 91);
-            GruppoGiocatori.Text = "Giocatori";
+            GruppoGiocatori.Location = new Point(12, 418);  //posizione
+            GruppoGiocatori.Size = new Size(200, 91);   //dimensione
+            GruppoGiocatori.Text = "Giocatori"; 
             GruppoGiocatori.TabStop = false;
-            GruppoGiocatori.TabIndex = 7;
+            //GruppoGiocatori.TabIndex = 7;
             
             panel1.Controls.Add(GruppoGiocatori);
 
@@ -228,9 +229,8 @@ namespace GiocoOca
                         LabelGiocatori[i].Location = new Point(122, 65);
                         BottoniGiocatori[i].Location = new Point(100, 65);
                         break;
-                    default:
-                        throw new Exception("Problema con l'indice dei giocatori");
                 }
+                //setto lo stile delle label e dei riquadri
                 LabelGiocatori[i].AutoSize = true;
                 LabelGiocatori[i].Size = new Size(62, 13);
                 LabelGiocatori[i].Text = "Giocatore " + i;
@@ -241,16 +241,15 @@ namespace GiocoOca
                 BottoniGiocatori[i].FlatStyle = FlatStyle.Flat;
                 BottoniGiocatori[i].FlatAppearance.BorderSize = 0;
                 BottoniGiocatori[i].UseVisualStyleBackColor = false;
+                //agiungo la label e il riquadro all'indice
                 GruppoGiocatori.Controls.Add(LabelGiocatori[i]);
                 GruppoGiocatori.Controls.Add(BottoniGiocatori[i]);
             }
-             
         }//end loadIndice
 
         //metodo per inserire le immagini dentro le caselle
         private void disegnaCaselle()
         {
-            
             for(int i = 0; i < caselle.Count; i++)
             {
                 if ((i != 0 && i % 9 == 0 || i % 9 == 5) && i != numCaselle) //caselle oca
@@ -272,18 +271,18 @@ namespace GiocoOca
             caselle[numCaselle].BackgroundImage = Properties.Resources.Oca3;
         }//end disegnaCaselle
 
-        //metodo per spostare ua pedina nella nuova posizione
+        //metodo per spostare una pedina nella nuova posizione
         public void spostaPedina(int posizione, int numPedina)
         {
-           caselle[posizione].Controls.Add(pedine[numPedina]);
+            caselle[posizione].Controls.Add(pedine[numPedina]);
         }
 
         //metodo per calcolare la posizione della pedina dentro la casella
         private Point posizionePedina(int numPedina)
         {
-            Point posizione;
+            Point posizione = new Point(0, 0);
             if (numCaselle == 63)
-            {
+            
                 switch (numPedina)
                 {
                     case 0:
@@ -304,12 +303,10 @@ namespace GiocoOca
                     case 5:
                         posizione = new Point(28, 32);
                         break;
-                    default:
-                        throw new Exception("Problema con le pedine");
                 }
-            }
-            else
-            {
+            
+            else if(numCaselle == 90)
+            
                 switch (numPedina)
                 {
                     case 0:
@@ -322,39 +319,67 @@ namespace GiocoOca
                         posizione = new Point(4, 26);
                         break;
                     case 3:
-                        posizione = new Point(21, 0);
+                        posizione = new Point(23, 0);
                         break;
                     case 4:
-                        posizione = new Point(21, 13);
+                        posizione = new Point(23, 13);
                         break;
                     case 5:
-                        posizione = new Point(21, 26);
+                        posizione = new Point(23, 26);
                         break;
-                    default:
-                        throw new Exception("Problema con le pedine");
                 }
-            }
+            
             return posizione;
-        }
+        }//end posizionePedina
 
-        //IL CAZZAFA CHE FA FINIRE IL GIOCO
-        public void SetTextbutt(String s)
+        //metodo che stampa un messaggio contenente il vincitore della partita
+        public void comunicaVincitore(string s)
         {
-            //Pedina1.Text = s;
-            //System.Threading.Thread.Sleep(2000);
-            MessageBox.Show("Il Giocatore " + s + " ha vinto la partita...", 
-                "Vittoria!", MessageBoxButtons.OK, MessageBoxIcon.Asterisk); 
-            Application.Exit();
+            string testo = "Il Giocatore " + s + " ha vinto la partita...";
+            string titolo = "Vittoria!";
+            MessageBoxButtons bottoni = MessageBoxButtons.OK;
+            MessageBoxIcon icona = MessageBoxIcon.Asterisk;
+            MessageBox.Show(testo, titolo, bottoni, icona);
+            rigiocare();
         }
-
+        //overload del metodo comunicaVincitore per terminare il gioco in caso di parità
+        public void comunicaVincitore()
+        {
+            string testo = "Nessun giocatore ha vinto la partita...";
+            string titolo = "Parità";
+            MessageBoxButtons bottoni = MessageBoxButtons.OK;
+            MessageBoxIcon icona = MessageBoxIcon.Asterisk;
+            MessageBox.Show(testo, titolo, bottoni, icona);
+            rigiocare();
+        }
+        /*
+         * Il metodo viene chiamato dopo la vittoria di un giocatore 
+         * o in caso di parità, chiede all'utente se vuole ripetere la 
+         * partita mantenendo le stesse impostazioni; in caso affermativo 
+         * si invoca il metodo OnRigioca_Clicked che comunica al controllore
+         * di ricaricare la partita, altrimenti l'applicazione termina 
+         */
+        private void rigiocare()
+        {
+            string testo = "Ripetere la partita?";
+            string titolo = "Rigiocare";
+            MessageBoxButtons bottoni = MessageBoxButtons.YesNo;
+            MessageBoxIcon icona = MessageBoxIcon.Question;
+            DialogResult rigiocare = DialogResult.Yes;
+            if (MessageBox.Show(testo, titolo, bottoni, icona) == rigiocare)
+            {
+                OnRigioca_Clicked.Invoke(this, new EventArgs());
+            }
+            else
+                Application.Exit();
+        }
+        //mostra le regole del gioco
         private void bottoneRegole_Click(object sender, EventArgs e)
         {
             string regole = Properties.Resources.Regole_gioco_oca;
-            MessageBox.Show(regole, "Regole del gioco", MessageBoxButtons.OK);
-        }
-        private void Mostra_Tipo(object sender, EventArgs e)
-        {
-
+            string titolo = "Regole del gioco";
+            MessageBoxButtons bottoni = MessageBoxButtons.OK;
+            MessageBox.Show(regole, titolo, bottoni);
         }
     }
 }

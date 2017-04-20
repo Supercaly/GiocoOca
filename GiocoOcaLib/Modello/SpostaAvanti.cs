@@ -1,11 +1,12 @@
-﻿using System;
+﻿
+using System;
 
-namespace GiocoOca
+namespace GiocoOca.Modello
 {
-    class SpostaInAvanti : Casella
+    public class SpostaAvanti : Casella
     {
 
-        public SpostaInAvanti(int idCasella) : base(idCasella)
+        public SpostaAvanti(int idCasella) : base(idCasella)
         {
         }
 
@@ -14,14 +15,14 @@ namespace GiocoOca
          * Il metodo sposta la pedina di n posizioni pari al tiro
          * effettuato precedentemente.
          */
-        public override void effetto(TavoloDaGioco t, Pedina p, EventHandler<ArgPedina> evento)
+        public override void effetto(TavoloDaGioco t, Pedina p, EventHandler<ArgEvento<Pedina>> evento)
         {
             if (!p.vincitore)
             {
                 int tiro = p.muovi(p.tiroPrecedente);
                 t.sposta(p, tiro);
             }
-            evento.Invoke(this, new ArgPedina(p));
+            evento.Invoke(this, new ArgEvento<Pedina>(p));
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System;
-namespace GiocoOca
+namespace GiocoOca.Modello
 {
     public class Locanda : Casella
     {
@@ -10,11 +10,11 @@ namespace GiocoOca
         {
         }
 
-        public override void effetto(TavoloDaGioco t, Pedina p, EventHandler<ArgPedina> evento)
+        public override void effetto(TavoloDaGioco t, Pedina p, EventHandler<ArgEvento<Pedina>> evento)
         {
             //metto la pedina in attesa per tre turni
             p.attendi(NUM_TURNI_ATTESA);
-            evento.Invoke(this, new ArgPedina(p));
+            evento.Invoke(this, new ArgEvento<Pedina>(p));
         }
     }
 }
